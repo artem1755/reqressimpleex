@@ -4,4 +4,11 @@ WORKDIR /app
 
 COPY . .
 
-CMD ["mvn", "clean", "test"]
+# Удаляем target, если есть
+RUN rm -rf /app/target || true
+
+# Сборка зависимостей без тестов
+RUN mvn clean install -DskipTests
+
+# По умолчанию запускаем тесты
+CMD ["mvn", "test"]
